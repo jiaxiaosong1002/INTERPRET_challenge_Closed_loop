@@ -1,7 +1,7 @@
 version: "3"
 services:
   predictor:
-    image: 111:1112
+    image: predictor:tag
     container_name: predictor
     command: ["python", "main.py", "-s", "192.168.10.74", "-p", "50051"]
     tty: true

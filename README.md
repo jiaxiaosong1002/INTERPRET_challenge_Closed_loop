@@ -10,6 +10,7 @@ In the `./predictor/*`,
 
 - `predictor.py` is an abstract class, you need to implement all the abstract methods in your own predictor.
 - `echo_predictor.py` is a simple echo predictor, namely returns back the last frame in the historical trajectory.
+- `lstm_predictor.py` is a pytorch-based predictor which is trained on the `interaction` dataset and has 0.3 MoN performance  on the MA scenario. `lstm.pt` stores the model parameters.
 
 ## Prerequisites ##
 
