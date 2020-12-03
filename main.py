@@ -3,7 +3,9 @@ import argparse
 import logging
 
 import simulator_client
-from predictor.echo_predictor import EchoPredictor
+#from predictor.echo_predictor import EchoPredictor
+from predictor.lstm_predictor import LSTMPredictor
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger("predictor")
@@ -19,13 +21,15 @@ def main():
                         help='server port to fetch environment state (default:50051).')
     args = parser.parse_args()
 
-    predictor = EchoPredictor(logger)
+    #predictor = EchoPredictor(logger)
+    predictor = LSTMPredictor(logger)
     client = simulator_client.SimulatorClient(logger, f'{args.server}:{args.port}', predictor)
 
-    # TODO: If your computer has a fewer number of threads, you can set this fetch_frequency bigger.
     fetch_frequency = 20
+    #TODO: If your computer has a fewer number of threads, you can set this variable smaller.
 
-    client.start(1 / fetch_frequency)
+    client.start(1/fetch_frequency)
+
 
 
 if __name__ == '__main__':

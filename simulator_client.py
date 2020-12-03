@@ -11,7 +11,6 @@ import simulator_pb2_grpc
 
 class SimulatorClient:
     def __init__(self, logger: logging.Logger, server_address, user_predictor: predictor.predictor.Predictor):
-        self._loop_interval = 100  # ms
         self._logger = logger
         self._server_address = server_address
         self._client = None
@@ -21,8 +20,6 @@ class SimulatorClient:
         self._simulator_paused = False
 
     def start(self, loop_interval):
-        self._loop_interval = loop_interval
-
         with grpc.insecure_channel(self._server_address) as channel:
             self._client = simulator_pb2_grpc.SimulatorServerStub(channel)
             next_loop = time.perf_counter()
@@ -71,7 +68,7 @@ class SimulatorClient:
                 other_trajs.append(self._proto_traj_to_traj(other_traj))
 
             self._predictor.on_env(map_name, my_traj, other_trajs)
-        elif response.resp_code == 233:  # the simulator paused
+        elif response.resp_code == 233:     # the simulator paused
             self._simulator_paused = True
             print(f'resp_code={response.resp_code}, the simulator paused')
         else:
@@ -85,7 +82,7 @@ class SimulatorClient:
                 resp = self._client.PushMyTrajectory(req)
                 # send an empty request to inform the simulator that the client has quit
             except Exception as e:
-                print(f'Close Predictor, e: {e.__str__()}')
+                print('Close Predictor')
                 exit(0)
 
         my_state = self._predictor.fetch_my_state()

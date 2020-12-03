@@ -23,8 +23,8 @@ In the `./predictor/*`,
     - please follow the instruction in the `simulator/readme.md`
 
     - ```bash
-      # Install grpc library (if not installed)
-      pip install grpcio			# my grpcio version is 1.30.0
+      pip install grpcio
+      pip install protobuf
       ```
 
  - pytorch or tensorflow to support your predictor.
@@ -35,13 +35,13 @@ In the `./predictor/*`,
 use `protoc` to generate python version protocols for communication.
 each time the `simulator.proto` updated, you need generate them again.
 ```bash
-protoc -I ./proto/ --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_python_plugin` ./proto/simulator.proto
-protoc -I ./proto/ --python_out=. ./proto/simulator.proto
+protoc -I ../proto/ --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_python_plugin` ../proto/simulator.proto
+protoc -I ../proto/ --python_out=. ../proto/simulator.proto
 ```
 
 If this fails, you can try
 ```bash
-python -m grpc_tools.protoc --proto_path=./proto/ --python_out=. --grpc_python_out=. ./proto/simulator.proto
+python -m grpc_tools.protoc --proto_path=../proto/ --python_out=. --grpc_python_out=. ../proto/simulator.proto
 ```
 You may get a warning when using `grpc_tools.protoc`, but it should still execute succesfully and generate the `simulator_pb2.py` and `simulator_pb2_grpc` files (provided that you have `grpc_tools` installed).
 
@@ -59,8 +59,6 @@ python3 main.py -s 127.0.0.1 -p 50051
 - You need to put the dependencies (pytorch, numpy, ....) in the `requirement.text`, then
 
 ```bash
-# predictor launch parameter s specified in docker-compose.yaml
-# note that you should not use 127.0.0.1/localhost as simulator address, as 127.0.0.1 is predictor container address here
 cd deploy
 ./make_image.sh my_predictor
 ```
